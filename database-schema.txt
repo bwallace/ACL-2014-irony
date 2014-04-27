@@ -1,0 +1,67 @@
+1. Overview
+
+This is documentation for the ironate.db file, which is an SQLlite (https://sqlite.org/) database. Basically, SQLlite is a flat-file that provides a SQL interface. You can access this either direclty, via a command line interface (http://www.sqlite.org/cli.html), as in:
+    > sqlite3 ironate.db
+
+to list all tables
+    sqlite3> .tables
+
+to inspect the columns in a given table
+    sqlite3> .schema <table name>
+
+
+Or programatically, via your language of choice (assuming a module exists). For python, this is the sqlite3 module, which is (happily) a built-in library. For examples of using this, see irony_stats.py, also in this directory.
+
+
+
+2. General notes on the database
+
+Comments comprise segments (roughly, sentences). We do segmentation into sentences very crudely, i.e., by splitting on punctuation (".", "!", etc.). This is obviously imperfect. In any case, the actual *text* for comments is held in segments. The order field tells you where in the comment the respective segments should be. So to get back the full-text comprising a comment, you want to do something like:
+
+> select text from irony_commentsegment where comment_id='XXX' order by segment_index;
+
+Where XXX is a comment_id. 
+
+In general we collect labels at the *sentence* level. In the ACL paper we collapsed these by treating the target as "at least one sentence in the comment was labeled as ironic by someone". Also, when decisions are forced, the label is collected at the comment level: the user is asked specifically "do you think any of the sentences in this comment were intended ironically?".
+
+
+
+3. Relevant table details
+
+-----------------
+| irony_comment |
+----------------
+:id: arbitrary unique identifying id
+:reddit id: unique reddit comment id
+:subreddit: string capturing the subreddit to which this comment belongs
+:thread_title: the associated reddit comment thread title
+:thread_url: url for this thread
+:thread_id: reddit thread id (string)
+:redditor: unique string ID identifying the commentor (author)
+:parent_comment_id: this will be NULL for all top-level comments. for comments that are replies, this will be a comment identifier.
+:to_label: this is a boolean indicating whether or not the corresponding comment is meant to be annotated or not. Recall that many comments will be pulled and put in the database as *contextualizing* information, ie., we will not want to label them.
+:downvotes: number of downvotes the comment had received at the time we parsed it.
+:upvotes: ditto, upvotes
+:permalink:a link to this comment
+
+------------------------
+| irony_commentsegment |
+-----------------------
+:id: arbitrary unique segment idenfier 
+:comment_id: the ID of the comment of which this segment is a part (see above)
+:segment_index: the relative location of this segment within the larger comment. This is numerical, so ordering segments by this field for a given <comment_ID> produces the original comment.
+:text: finally, the actual body of the segment (string).
+
+---------
+| label |
+---------
+:id: unique identifier for this label.
+:segment_id: the segment this label refers to.
+:comment_id: the comment identifier for the comment segment associated with this thread (technically redundant, but convienent to have)
+:labeler_id: the person who provided this label.
+:label: y \in {-1,0,1} for unironic, "i don't know" and ironic, respectively.
+:forced_decision: this will be true when (and only when) the labeler was forced to make a decision, despite not beign sure. this happens when they request additional context, for example. 
+:viewed_thread: boolean indicating whether the labeler viewed the thread prior to giving this label
+:viewed_page: boolean indicating whether the labeler viewed the target *webpage* associated with this thread prior to giving this label.
+:confidence: score on a Likert scale expressing subjective confidence in the assigned label.
+
