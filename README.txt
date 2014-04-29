@@ -5,7 +5,7 @@ Code & data to reproduce the analyses in our ACL 2014 paper:
     Humans Require Context to Infer Ironic Intent (so Computers Probably do, too)
         Byron C Wallace, Do Kook Choe, Laura Kertz, and Eugene Charniak
 
-Made possible by support from the Army Research Office (ARO), grant# 528674 
+Made possible by support from the Army Research Office (ARO), grant 64481-MA 
 "Sociolinguistically Informed Natural Language Processing: Automating Irony Detection"
 
 Contact: Byron Wallace (byron.wallace@gmail.com)

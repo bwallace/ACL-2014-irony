@@ -56,12 +56,12 @@ In general we collect labels at the *sentence* level. In the ACL paper we collap
 | label |
 ---------
 :id: unique identifier for this label.
-:segment_id: the segment this label refers to.
-:comment_id: the comment identifier for the comment segment associated with this thread (technically redundant, but convienent to have)
+:segment_id: the segment this label refers to. This will be empty in the case of forced decision labels, which are really at the *comment* level. 
+:comment_id: the comment identifier for the comment segment associated with this thread (technically redundant, but convienent to have).
 :labeler_id: the person who provided this label.
 :label: y \in {-1,0,1} for unironic, "i don't know" and ironic, respectively.
 :forced_decision: this will be true when (and only when) the labeler was forced to make a decision, despite not beign sure. this happens when they request additional context, for example. 
 :viewed_thread: boolean indicating whether the labeler viewed the thread prior to giving this label
 :viewed_page: boolean indicating whether the labeler viewed the target *webpage* associated with this thread prior to giving this label.
-:confidence: score on a Likert scale expressing subjective confidence in the assigned label.
+:confidence: score on a Likert scale expressing subjective confidence in the assigned label (low, medium, high).
 
