@@ -6,7 +6,7 @@ Code & data to reproduce the analyses in our ACL 2014 paper:
         Byron C Wallace, Do Kook Choe, Laura Kertz, and Eugene Charniak
 
 Made possible by support from the Army Research Office (ARO), grant# 528674 
-"Sociolinguistically Informed Natural Lanuage Processing: Automating Irony Detection"
+"Sociolinguistically Informed Natural Language Processing: Automating Irony Detection"
 
 Contact: Byron Wallace (byron.wallace@gmail.com)
 
