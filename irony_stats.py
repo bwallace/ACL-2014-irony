@@ -290,7 +290,7 @@ def _get_entries(a_list, indices):
 def get_labeled_thrice_comments():
     ''' get all ids for comments labeled >= 3 times '''
     cursor.execute(
-        '''select comment_id from irony_label group by comment_id having count(labeler_id) >= 3;'''
+        '''select comment_id from irony_label group by comment_id having count(distinct labeler_id) >= 3;'''
     )
     thricely_labeled_comment_ids = _grab_single_element(cursor.fetchall())
     return thricely_labeled_comment_ids
