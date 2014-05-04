@@ -40,14 +40,13 @@ import statsmodels.api as sm
 db_path = "ironate.db"
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
-### we consider these 3 active labelers here
-labelers_of_interest = [2,4,5] 
 
 comment_sep_str = "\n\n"+"-"*50+"\n"
 
 def _make_sql_list_str(ls):
     return "(" + ",".join([str(x_i) for x_i in ls]) + ")"
 
+labelers_of_interest = [2,4,5,6]
 labeler_id_str = _make_sql_list_str(labelers_of_interest)
 
 def _grab_single_element(result_set, COL=0):
@@ -142,24 +141,30 @@ def ml_bow(show_features=False):
     Section 5, Eq (2) in the paper. 
 
     > irony_stats.ml_bow()
-                                   Logit Regression Results                           
+    Optimization terminated successfully.
+             Current function value: 0.611578
+             Iterations 5
+                               Logit Regression Results                           
     ==============================================================================
-    Dep. Variable:                      y   No. Observations:                 3020
-    Model:                          Logit   Df Residuals:                     3017
+    Dep. Variable:                      y   No. Observations:                 1949
+    Model:                          Logit   Df Residuals:                     1946
     Method:                           MLE   Df Model:                            2
-    Date:                Sat, 26 Apr 2014   Pseudo R-squ.:                 0.05570
-    Time:                        06:06:28   Log-Likelihood:                -1832.0
-    converged:                       True   LL-Null:                       -1940.0
-                                            LLR p-value:                 1.182e-47
+    Date:                Sun, 04 May 2014   Pseudo R-squ.:                 0.06502
+    Time:                        08:24:43   Log-Likelihood:                -1192.0
+    converged:                       True   LL-Null:                       -1274.9
+                                            LLR p-value:                 9.956e-37
     ==============================================================================
                      coef    std err          z      P>|z|      [95.0% Conf. Int.]
     ------------------------------------------------------------------------------
-    const         -1.2148      0.058    -21.003      0.000        -1.328    -1.101
-    x1             0.4890      0.098      5.013      0.000         0.298     0.680
-    x2             0.9714      0.082     11.813      0.000         0.810     1.133
+    const         -1.3284      0.088    -15.170      0.000        -1.500    -1.157
+    x1             0.9404      0.108      8.723      0.000         0.729     1.152
+    x2             0.7573      0.106      7.149      0.000         0.550     0.965
     ==============================================================================
 
-    NOTE that this result will vary slightly because we are using stochastic gradient 
+    TWO NOTES:
+    1 A small bug in the original SQL code here resulted in a slightly different value for 
+    x2; however the resutls are qualitatively the same as in the paper.
+    2 In any case, this result will vary slightly because we are using stochastic gradient 
     descent! Still, the x2 estimate and CI (which is of interest) should be quite close.
     '''
     all_comment_ids = get_labeled_thrice_comments()
